@@ -1,35 +1,21 @@
-USE [Group15]
-GO
-
-INSERT INTO [dbo].[FlightRaw]
-           ([AirlineID]
-           ,[DepartureCity]
-           ,[ArrivalCity]
-           ,[FlightNum]
-           ,[FlightDate]
+INSERT INTO [dbo].[FlightResult]
+           ([CityID]
+           ,[AirlineID]
            ,[FlightMonth]
-           ,[DayofMonth]
-           ,[IsCancelled]
-           ,[IsDiverted]
-           ,[DepDelayMinutes])
+           ,[FlightDayOfMonth]
+           ,[PercentDelayed]
+           ,[PercentCancelled])
 SELECT
-	 a.AirlineID
-	,d.CityID
-	,r.CityID
-	,c.Flight_Number_Operating_Airline
-	,c.FlightDate
-	,c.[Month]
-	,c.[DayOfMonth]
-	,c.Cancelled
-	,c.Diverted
-	,c.DepDelayMinutes
-FROM dbo.Combined_Flights_2018 c
-JOIN dbo.City d
-	ON c.Dest = d.AirportCode
-JOIN dbo.City r
-	ON c.Origin = r.AirportCode
-JOIN dbo.Airline a
-	ON c.Airline = a.AirlineName
+	 f.DepartureCity
+	,f.AirlineID
+	,f.FlightMonth
+	,f.[DayOfMonth]
+	,SUM((CASE WHEN IsCancelled = 1 THEN CAST(1 AS INT) ELSE CAST(0 AS INT) END) + (CASE WHEN IsDiverted = 1 THEN CAST(1 AS INT) ELSE CAST(0 AS INT) END))/CAST(COUNT(*) AS NUMERIC(10,3))
+	,SUM(CASE WHEN DepDelayMinutes > 0 THEN 1 ELSE 0 END)/CAST(COUNT(*) AS NUMERIC(10,3))
+FROM FlightRaw f
+GROUP BY 
+	 f.DepartureCity
+	,f.AirlineID
+	,f.FlightMonth
+	,f.[DayOfMonth]
 GO
-
-
