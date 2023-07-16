@@ -1,0 +1,273 @@
+---
+title: "Shiny POC"
+output: html_document
+date: "2023-07-13"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(Rtsne)
+install.packages("shiny")
+
+slices <- c(10, 12,4, 16, 8)
+lbls <- c("US", "UK", "Australia", "Germany", "France")
+```
+
+
+```{r}
+library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
+library(shinySearchbar)
+library(data.table)
+
+# Define UI for app that draws a histogram ----
+ui <- dashboardPage(
+  dashboardHeader(),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Home", tabName = "Home", icon = icon("dashboard")),
+      menuItem("Add", tabName = "Add", icon = icon("th")),
+      menuItem("Delete", tabName = "Delete", icon = icon("th")),
+      menuItem("Modify", tabName = "Modify", icon = icon("th"))
+    )
+  ),
+      
+  dashboardBody(
+    tabItems(
+      #First tab aka Home Page
+        tabItem(tabName = "Home",
+          h1("Home: Flight History Query"),
+                
+          selectInput(
+            inputId = "airline",
+            label = "Airline",
+            choices = c("Southwest", "Delta", "American")
+            ),
+
+          searchInput(
+            inputId = "airport",
+            label = "Departure Airport",
+            value = "Search",
+            placeholder = "MDW",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+        dateInput(
+          inputId = "date",
+          label = "Date",
+          value = NULL,
+          min = NULL,
+          max = NULL,
+          format = "mm-dd",
+          startview = "month",
+          weekstart = 0,
+          language = "en",
+          width = NULL,
+          autoclose = TRUE,
+          datesdisabled = NULL,
+          daysofweekdisabled = NULL
+           )
+      ),
+     #Second tab aka Add Page
+      tabItem(tabName = "Add",
+          h1("Add"),
+
+                
+          selectInput(
+            inputId = "airline",
+            label = "Airline",
+            choices = c("Southwest", "Delta", "American")
+            ),
+
+          searchInput(
+            inputId = "airport",
+            label = "Departure Airport",
+            value = "Search",
+            placeholder = "MDW",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+          
+          searchInput(
+            inputId = "flightnum",
+            label = "Flight Number",
+            value = "",
+            placeholder = "1234",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+          searchInput(
+            inputId = "delay",
+            label = "Delay Time",
+            value = "",
+            placeholder = "5",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+        dateInput(
+          inputId = "date",
+          label = "Date",
+          value = NULL,
+          min = NULL,
+          max = NULL,
+          format = "mm-dd",
+          startview = "month",
+          weekstart = 0,
+          language = "en",
+          width = NULL,
+          autoclose = TRUE,
+          datesdisabled = NULL,
+          daysofweekdisabled = NULL
+           )),          
+
+
+      #Third tab aka Delete Page
+      tabItem(tabName = "Delete",
+          h1("Delete"),
+
+          selectInput(
+            inputId = "airline",
+            label = "Airline",
+            choices = c("Southwest", "Delta", "American")
+            ),
+
+          searchInput(
+            inputId = "airport",
+            label = "Departure Airport",
+            value = "Search",
+            placeholder = "MDW",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+          
+          searchInput(
+            inputId = "flightnum",
+            label = "Flight Number",
+            value = "",
+            placeholder = "1234",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+          searchInput(
+            inputId = "delay",
+            label = "Delay Time",
+            value = "",
+            placeholder = "5",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+        dateInput(
+          inputId = "date",
+          label = "Date",
+          value = NULL,
+          min = NULL,
+          max = NULL,
+          format = "mm-dd",
+          startview = "month",
+          weekstart = 0,
+          language = "en",
+          width = NULL,
+          autoclose = TRUE,
+          datesdisabled = NULL,
+          daysofweekdisabled = NULL
+           )),          
+     
+
+
+      #Fourth tab aka Modify Page
+      tabItem(tabName = "Modify",
+          h1("Modify"),
+
+          selectInput(
+            inputId = "airline",
+            label = "Airline",
+            choices = c("Southwest", "Delta", "American")
+            ),
+
+          searchInput(
+            inputId = "airport",
+            label = "Departure Airport",
+            value = "Search",
+            placeholder = "MDW",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+          
+          searchInput(
+            inputId = "flightnum",
+            label = "Flight Number",
+            value = "",
+            placeholder = "1234",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+          searchInput(
+            inputId = "delay",
+            label = "Delay Time",
+            value = "",
+            placeholder = "5",
+            btnSearch = icon("magnifying-glass"),
+            btnReset = icon("xmark"),
+            resetValue = "Search",
+            width = NULL
+            ),
+
+        dateInput(
+          inputId = "date",
+          label = "Date",
+          value = NULL,
+          min = NULL,
+          max = NULL,
+          format = "mm-dd",
+          startview = "month",
+          weekstart = 0,
+          language = "en",
+          width = NULL,
+          autoclose = TRUE,
+          datesdisabled = NULL,
+          daysofweekdisabled = NULL
+           ))
+
+
+)))
+# Define server logic required to draw a histogram ----
+server <- function(input, output) {
+
+#output$plot1 <- renderPieChart({
+#pie(slices, labels = lbls, main="Pie Chart of Countries")})
+  
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+
+```
+
