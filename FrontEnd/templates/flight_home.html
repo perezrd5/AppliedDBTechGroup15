@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        h1   {color: rgb(75, 73, 72);
+            font-family: Arial, Helvetica, sans-serif;}
+        h2   {color: rgb(75, 73, 72);
+            font-family: Arial, Helvetica, sans-serif;}
+        p    {color: rgb(75, 73, 72);
+            font-family: Arial, Helvetica, sans-serif;}
+
+        a    {color: Blue;}
+        input {border: 2px solid Gray;}
+        p.inset {border-style: inset;
+                border-radius: 5px}
+        div {
+                border: 1px solid black;
+                margin-top: 10px;
+                margin-bottom: 100px;
+                margin-right: 600px;
+                margin-left: 80px;
+                
+            }
+        
+    </style>
+</head>
+
+<body>
+
+    <!-- <h1>Flight Information</h1> -->
+    <!-- <img src="/images/Image.jpg" width="1700" height="333"> -->
+    <br>
+    <br>
+            <div>
+                <p class="inset">
+                    <br>
+                    &emsp; <input type="button" onclick="window.location.href='/';" value=" Group 15 "/> 
+                    
+                    &emsp;  &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;
+                    &emsp;  &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;
+                    &emsp;  &emsp; &emsp; &emsp;&emsp;  &emsp; 
+
+                    <input type="button" onclick="window.location.href='/';" value=" Home "/> &emsp; 
+                    <input type="button" onclick="window.location.href='/enternew_flight';" value=" Add "/> &emsp;
+                    <input type="button" onclick="window.location.href='/modify_flight';" value=" Modify "/>  &emsp;
+                    <input type="button" onclick="window.location.href='/remove_flight';" value=" Delete "/>
+                    <br><br>
+                </p>
+                
+                <p class="inset">
+                    <h1>Home</h1>
+                    <h2>Flight History Query</h2>
+                    
+                        <form action = "{{ url_for('Showstats') }}" method = "POST">
+                            <p>&emsp; &emsp; Airline Name &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Flight#  <br>
+                                &emsp; &emsp; <input type = "text" name = "flight_nm" /> &emsp; &emsp; &emsp; &emsp; &emsp; <input style="border: 2px solid Gray;" type = "text" name = "flight_num" /></br></p>
+                            
+                            <p>&emsp; &emsp;Departure Airport 
+                                &emsp; &emsp;<input type = "text" name = "oa" /> </br></p>
+            
+                            <p>&emsp; &emsp;<label for="Depart_dt">Departure Date:</label>
+                                &emsp; &emsp;<input type="date" id="Depart_dt" name="Depart_dt"></p>
+                                &emsp; &emsp;<input type = "submit" value = "submit" /><br>
+                        </form>
+                 </p>
+            </div>
+</body>
+</html>

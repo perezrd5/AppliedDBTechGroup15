@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+   <head>
+      <style>
+          h1   {color: rgb(75, 73, 72);
+              font-family: Arial, Helvetica, sans-serif;}
+          h2   {color: rgb(75, 73, 72);
+              font-family: Arial, Helvetica, sans-serif;}
+          p    {color: rgb(75, 73, 72);
+              font-family: Arial, Helvetica, sans-serif;}
+  
+          a    {color: Blue;}
+          input {border: 2px solid Gray;}
+          p.inset {border-style: inset;
+                  border-radius: 5px}
+          div {
+                  border: 1px solid black;
+                  margin-top: 10px;
+                  margin-bottom: 100px;
+                  margin-right: 600px;
+                  margin-left: 80px;
+                  
+              }
+          
+      </style>
+  </head>
+
+   <body>
+      <h1>Your Flight Departure Prediction </h1>
+
+      <table border = 1>
+         <thead>
+            <td>flight_result_id</td>
+            <td>City_Name</td>
+            <td>Airline_Name</td>
+            <td>Flight_Month</td>
+            <td>Flight_Day_Of_Month</td>
+            <td>Percent_Delayed</td>
+            <td>Percent_Cancelled</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["flightresultid"]}}</td>
+               <td>{{row["trial_city_nm"]}}</td>
+               <td>{{ row["airline_nm"]}}</td>
+               <td>{{row['flightmonth']}}</td>	
+               <td>{{row['trial_flightdayofmonth_5']}}</td>	
+               <td>{{row['trial_percentdelayed_6']}}</td>	
+               <td>{{row['percentcancelled']}}</td>	
+            </tr>
+         {% endfor %}
+      </table>
+      <br>
+      <a href = "/">Go back to home page</a>
+      
+   </body>
+</html>
